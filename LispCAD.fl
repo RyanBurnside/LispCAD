@@ -41,8 +41,7 @@ Function {test_CB(Fl_Widget* w, void* p)} {open return_type {static void}
 
 Function {commandline_CB_wrapper(Fl_Widget* w, void* p)} {open return_type {static void}
 } {
-  code {CommandLine::call_back(w, p);} {selected
-  }
+  code {CommandLine::call_back(w, p);} {}
 } 
 
 Function {get_int()} {open return_type cl_object
@@ -53,7 +52,10 @@ Function {get_int()} {open return_type cl_object
 Function {} {open
 } {
   code {cl_boot(argc, argv);
-atexit(cl_shutdown);} {}
+atexit(cl_shutdown);
+std::string loadpath="(load \\"System/SYSTEM Scripts/Setup.lisp\\")";
+cl_safe_eval(c_string_to_object(loadpath.c_str()), Cnil, Cnil);} {selected
+  }
   Fl_Window main_window {
     label LispCAD open
     xywh {812 315 800 630} type Double box UP_BOX hide resizable size_range {640 480 0 0}

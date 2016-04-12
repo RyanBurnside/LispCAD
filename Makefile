@@ -6,20 +6,22 @@ OBJS= Shape.o Drawing.o CADCanvas.o CommandLine.o LispCAD.o
 LispCAD: $(OBJS)
 	$(CXX) $(CXXFLAGS) -o LispCAD $(OBJS) -lfltk -lecl
 
-LispCAD.o: LispCAD.cpp LispCAD.h
+LispCAD.o: LispCAD.cpp LispCAD.h CADCanvas.h CommandLine.h
 	$(CXX) $(CXXFLAGS) -c LispCAD.cpp -lfltk -lecl
 
-CADCanvas.o: CADCanvas.cpp CADCanvas.h
+CADCanvas.o: CADCanvas.cpp CADCanvas.h Drawing.h
 	$(CXX) $(CXXFLAGS) -c CADCanvas.cpp -lfltk
 
 CommandLine.o: CommandLine.cpp CommandLine.h
 	$(CXX) $(CXXFLAGS) -c CommandLine.cpp -lfltk
 
-Drawing.o: Drawing.cpp Drawing.h
+Drawing.o: Drawing.cpp Drawing.h Shape.h
 	$(CXX) $(CXXFLAGS) -c Drawing.cpp
 
 Shape.o: Shape.cpp Shape.h
 	$(CXX) $(CXXFLAGS) -c Shape.cpp
 
 clean:
-	rm *.o
+	rm $(OBJS)
+	rm LispCAD
+

@@ -69,6 +69,8 @@ Fl_Slider *pan_vert=(Fl_Slider *)0;
 int main(int argc, char **argv) {
   cl_boot(argc, argv);
   atexit(cl_shutdown);
+  std::string loadpath="(load \"System/SYSTEM Scripts/Setup.lisp\")";
+  cl_safe_eval(c_string_to_object(loadpath.c_str()), Cnil, Cnil);
   { main_window = new Fl_Double_Window(800, 630, "LispCAD");
     main_window->box(FL_UP_BOX);
     { canvas = new CADCanvas(0, 33, 780, 482, "CADCanvas");
