@@ -1,0 +1,5 @@
+;;;; This script binds system functions to call able aliases
+
+
+;; This is the call table for runtime executable functions
+(defparameter *call-table)
