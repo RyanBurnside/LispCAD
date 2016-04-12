@@ -14,6 +14,7 @@ void add_circle(cl_object x, cl_object y, cl_object radius);
 void test_CB(Fl_Widget* w, void* p);
 void commandline_CB_wrapper(Fl_Widget* w, void* p);
 cl_object get_int();
+void canvas_click(Fl_Widget* w, void* p);
 #include <FL/Fl_Double_Window.H>
 extern Fl_Double_Window *main_window;
 extern CADCanvas *canvas;
