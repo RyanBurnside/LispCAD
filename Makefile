@@ -9,7 +9,7 @@ LispCAD: $(OBJS)
 LispCAD.o: LispCAD.cpp LispCAD.h CADCanvas.h CommandLine.h
 	$(CXX) $(CXXFLAGS) -c LispCAD.cpp -lfltk -lecl
 
-CADCanvas.o: CADCanvas.cpp CADCanvas.h Drawing.h
+CADCanvas.o: CADCanvas.cpp CADCanvas.h Drawing.h CommandLine.h
 	$(CXX) $(CXXFLAGS) -c CADCanvas.cpp -lfltk
 
 CommandLine.o: CommandLine.cpp CommandLine.h
