@@ -32,12 +32,6 @@ cl_object get_int() {
   return CommandLine::get_input(CommandLine::mode::GET_INT);
 }
 
-void canvas_click(Fl_Widget* w, void* p) {
-  std::string temp = mini_buffer->value();
-  temp += std::to_string(Fl::event_x());
-  mini_buffer->value("Puck you sir!");
-}
-
 Fl_Double_Window *main_window=(Fl_Double_Window *)0;
 
 CADCanvas *canvas=(CADCanvas *)0;
@@ -87,7 +81,6 @@ int main(int argc, char **argv) {
       canvas->labelfont(0);
       canvas->labelsize(14);
       canvas->labelcolor(FL_FOREGROUND_COLOR);
-      canvas->callback((Fl_Callback*)canvas_click);
       canvas->align(Fl_Align(FL_ALIGN_CENTER));
       canvas->when(FL_WHEN_ENTER_KEY_ALWAYS);
       Fl_Group::current()->resizable(canvas);
@@ -129,6 +122,8 @@ int main(int argc, char **argv) {
     main_window->size_range(640, 480);
     main_window->end();
   } // Fl_Double_Window* main_window
+  // Connect mini_buffer to canvas
+  canvas->CommandLine_ptr = mini_buffer;
   // Register ecl functions
   cl_def_c_function(c_string_to_object("add-line"), cl_objectfn_fixed(add_line), 4);
   cl_def_c_function(c_string_to_object("add-circle"), cl_objectfn_fixed(add_circle), 3);

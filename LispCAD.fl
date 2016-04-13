@@ -49,14 +49,6 @@ Function {get_int()} {open return_type cl_object
   code {return CommandLine::get_input(CommandLine::mode::GET_INT);} {}
 } 
 
-Function {canvas_click(Fl_Widget* w, void* p)} {open return_type {static void}
-} {
-  code {std::string temp = mini_buffer->value();
-temp += std::to_string(Fl::event_x());
-mini_buffer->value("Puck you sir!");} {selected
-  }
-} 
-
 Function {} {open
 } {
   code {cl_boot(argc, argv);
@@ -65,11 +57,10 @@ std::string loadpath="(load \\"System/SYSTEM Scripts/Setup.lisp\\")";
 cl_safe_eval(c_string_to_object(loadpath.c_str()), Cnil, Cnil);} {}
   Fl_Window main_window {
     label LispCAD open
-    xywh {812 315 800 630} type Double box UP_BOX hide resizable size_range {640 480 0 0}
+    xywh {728 156 800 630} type Double box UP_BOX hide resizable size_range {640 480 0 0}
   } {
     Fl_Box canvas {
       label CADCanvas
-      callback canvas_click
       xywh {0 33 780 482} box FLAT_BOX color 0 when 10 resizable
       class CADCanvas
     }
@@ -134,6 +125,9 @@ cl_safe_eval(c_string_to_object(loadpath.c_str()), Cnil, Cnil);} {}
     Fl_Slider pan_vert {
       xywh {780 29 20 486} type {Vert Knob} selection_color 94
     }
+  }
+  code {// Connect mini_buffer to canvas
+canvas->CommandLine_ptr = mini_buffer;} {selected
   }
   code {// Register ecl functions
 cl_def_c_function(c_string_to_object("add-line"), cl_objectfn_fixed(add_line), 4);
