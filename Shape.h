@@ -66,6 +66,9 @@ public:
 
   static int selection_mask_dist;
 
+  // A flag to mark shape instances as selected
+  bool selected = false;
+
   // Colors are broken down into uchars to jive with FLTK 
   unsigned char r      =  0;
   unsigned char g      =  0;

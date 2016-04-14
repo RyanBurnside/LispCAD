@@ -49,7 +49,7 @@ Function {get_int()} {open return_type cl_object
   code {return CommandLine::get_input(CommandLine::mode::GET_INT);} {}
 } 
 
-Function {} {open
+Function {} {open selected return_type int
 } {
   code {cl_boot(argc, argv);
 atexit(cl_shutdown);
@@ -57,11 +57,11 @@ std::string loadpath="(load \\"System/SYSTEM Scripts/Setup.lisp\\")";
 cl_safe_eval(c_string_to_object(loadpath.c_str()), Cnil, Cnil);} {}
   Fl_Window main_window {
     label LispCAD open
-    xywh {728 156 800 630} type Double box UP_BOX hide resizable size_range {640 480 0 0}
+    xywh {754 197 800 630} type Double box UP_BOX hide resizable size_range {640 480 0 0}
   } {
     Fl_Box canvas {
       label CADCanvas
-      xywh {0 33 780 482} box FLAT_BOX color 0 when 10 resizable
+      xywh {0 27 780 488} box FLAT_BOX color 0 when 10 resizable
       class CADCanvas
     }
     Fl_Text_Display echo_area {
@@ -76,7 +76,7 @@ cl_safe_eval(c_string_to_object(loadpath.c_str()), Cnil, Cnil);} {}
       class CommandLine
     }
     Fl_Menu_Bar menu_bar {open
-      xywh {0 0 800 31} color 50
+      xywh {0 0 800 26} color 50
     } {
       Submenu file_menu {
         label File open
@@ -123,12 +123,11 @@ cl_safe_eval(c_string_to_object(loadpath.c_str()), Cnil, Cnil);} {}
       xywh {0 514 780 19} type {Horz Knob} color 50 selection_color 94
     }
     Fl_Slider pan_vert {
-      xywh {780 29 20 486} type {Vert Knob} selection_color 94
+      xywh {780 24 20 491} type {Vert Knob} selection_color 94
     }
   }
   code {// Connect mini_buffer to canvas
-canvas->CommandLine_ptr = mini_buffer;} {selected
-  }
+canvas->CommandLine_ptr = mini_buffer;} {}
   code {// Register ecl functions
 cl_def_c_function(c_string_to_object("add-line"), cl_objectfn_fixed(add_line), 4);
 cl_def_c_function(c_string_to_object("add-circle"), cl_objectfn_fixed(add_circle), 3);

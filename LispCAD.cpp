@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
   cl_safe_eval(c_string_to_object(loadpath.c_str()), Cnil, Cnil);
   { main_window = new Fl_Double_Window(800, 630, "LispCAD");
     main_window->box(FL_UP_BOX);
-    { canvas = new CADCanvas(0, 33, 780, 482, "CADCanvas");
+    { canvas = new CADCanvas(0, 27, 780, 488, "CADCanvas");
       canvas->box(FL_FLAT_BOX);
       canvas->color(FL_FOREGROUND_COLOR);
       canvas->selection_color(FL_BACKGROUND_COLOR);
@@ -106,7 +106,7 @@ int main(int argc, char **argv) {
       mini_buffer->align(Fl_Align(FL_ALIGN_TOP_LEFT));
       mini_buffer->when(FL_WHEN_ENTER_KEY_ALWAYS);
     } // CommandLine* mini_buffer
-    { menu_bar = new Fl_Menu_Bar(0, 0, 800, 31);
+    { menu_bar = new Fl_Menu_Bar(0, 0, 800, 26);
       menu_bar->color(FL_LIGHT1);
       menu_bar->menu(menu_menu_bar);
     } // Fl_Menu_Bar* menu_bar
@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
       pan_across->color(FL_LIGHT1);
       pan_across->selection_color((Fl_Color)94);
     } // Fl_Slider* pan_across
-    { pan_vert = new Fl_Slider(780, 29, 20, 486);
+    { pan_vert = new Fl_Slider(780, 24, 20, 491);
       pan_vert->type(4);
       pan_vert->selection_color((Fl_Color)94);
     } // Fl_Slider* pan_vert

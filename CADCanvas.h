@@ -13,6 +13,8 @@ public:
   CommandLine* CommandLine_ptr = nullptr;
   enum {SELECTING, PICK_SHAPE, PICK_POINT};
   int mode = PICK_POINT;
+  float scale = 1.0;
+
   CADCanvas(int X, int Y,int W,int H,const char*L=0) : Fl_Widget(X,Y,W,H,L)
   {
     this->drawing_ptr = new Drawing;
@@ -43,6 +45,22 @@ public:
     case FL_RELEASE:
       return(1);
       break;
+
+    case FL_MOUSEWHEEL:
+      // TODO clean up bounds checking for scale *DANGER DANGER*
+      if(Fl::event_dy() == -1) // Zoom out
+      {
+	scale *= 2.0;
+      }
+      else // Zoom in
+      {
+
+	if(scale > 0.0)
+	{scale /= 2.0;}
+      }
+      draw();
+      return(1);
+      break;
     }
     // Still here? Event not consumed!
     return(ret);
@@ -64,14 +82,14 @@ public:
 	switch(s.type_flag)
 	{
 	case Shape::type::LINE:
-	  fl_line(x() + s.pts[0].x, y() + s.pts[0].y,
-		  x() + s.pts[1].x, y() + s.pts[1].y);
+	  fl_line(x() + s.pts[0].x * scale, y() + s.pts[0].y * scale,
+		  x() + s.pts[1].x * scale, y() + s.pts[1].y * scale);
 	  break;
 	case Shape::type::ARC:
 	  break;
 	case Shape::type::CIRCLE:
-	  fl_circle(x() + s.pts[0].x, y() + s.pts[0].y,
-		    s.pts[1].x - s.pts[0].x);
+	  fl_circle(x() + s.pts[0].x * scale, y() + s.pts[0].y * scale,
+		    s.pts[1].x * scale - s.pts[0].x * scale);
 	  break;
 
 	}
