@@ -47,6 +47,10 @@ public:
   // The meat of the Shape, a list of points
   std::vector<ShapePoint> pts;
 
+  // These angles are used for arc shapes
+  double angle_1 = 0;
+  double angle_2 = 0;
+
   int  type_flag = Shape::type::LINE;
   /* snap modes are
      vertex (lines)
@@ -92,8 +96,11 @@ public:
 				 unsigned char blue);
 
   // Note, point order is start center end clockwise
-  static Shape shape_make_arc(ShapePoint& start, ShapePoint& middle, 
-			      ShapePoint& end, unsigned char red, 
+  static Shape shape_make_arc(ShapePoint& top_left, 
+			      ShapePoint& lower_right,
+			      double angle,
+			      double angle2,
+			      unsigned char red, 
 			      unsigned char green, unsigned char blue);
   ~Shape();
 };

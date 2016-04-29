@@ -20,16 +20,134 @@ void add_circle(cl_object x, cl_object y, cl_object radius) {
   canvas->redraw();
 }
 
+void add_arc(cl_object start_x, cl_object start_y, cl_object end_x, cl_object end_y, cl_object angle, cl_object angle2) {
+  ShapePoint start_point(ecl_to_double(start_x), ecl_to_double(start_y));
+  ShapePoint end_point(ecl_to_double(end_x), ecl_to_double(end_y));
+  Shape temp;
+  double a = ecl_to_double(angle);
+  double a2 = ecl_to_double(angle2);
+  
+  temp = Shape::shape_make_arc(start_point, end_point, a, a2,
+                               255, 255, 255);
+                               
+  canvas->drawing_ptr->add_shape(temp);
+  canvas->redraw();
+}
+
 void test_CB(Fl_Widget* w, void* p) {
   std::cout << "test_CB called!" << std::endl;
 }
 
-void commandline_CB_wrapper(Fl_Widget* w, void* p) {
-  CommandLine::call_back(w, p);
+void commandline_CB(Fl_Widget* w, void* data) {
+  CommandLine* ptr = (CommandLine *)w;
+  if(ptr->repl_mode)
+  {
+    cl_safe_eval(c_string_to_object(ptr->value()), Cnil, Cnil);
+    ptr->value("");
+  }
+  else
+  {
+    ptr->readonly(true);
+  }
 }
 
-cl_object get_int() {
-  return CommandLine::get_input(CommandLine::mode::GET_INT);
+/**
+   // Prompt and grab string from commandline
+*/
+std::string commandline_get_string(const std::string& prompt, CommandLine *input) {
+  input->repl_mode = false;
+  
+  // Lock some widgets here
+  // ...
+  
+  Fl_Text_Buffer* buff = echo_area->buffer();
+  
+  buff->text("");
+  echo_area->insert(prompt.c_str());
+  input->readonly(false);
+  input->activate();
+  input->value("");
+  
+  // Now trap user in input
+  while(! input->readonly())
+  {
+    Fl::wait();
+  }
+  
+  // Reactivate other groups here
+  // ...
+  
+  std::string return_string = input->value();
+  
+  // Reset prompt 
+  buff->text("");
+  input->value("");
+  input->readonly(false);
+  input->repl_mode = true;
+  return return_string;
+}
+
+/**
+   // Request a string from user
+*/
+cl_object get_string(cl_object prompt) {
+  std::string val;
+  std::string string = "";
+  
+  //get dimension
+  int j = prompt->string.dim;
+  
+  //get pointer
+  ecl_character* selv = prompt->string.self;
+  
+  //do simple pointer addition
+  for(int i=0;i<j;i++){
+      string += (*(selv+i));
+  }
+  
+  val = commandline_get_string(std::string(string), mini_buffer);
+  val = "\"" + val + "\"";
+  return c_string_to_object(val.c_str());
+}
+
+cl_object get_int(cl_object prompt) {
+  std::string val;
+  std::string string = "";
+  
+  //get dimension
+  int j = prompt->string.dim;
+  
+  //get pointer
+  ecl_character* selv = prompt->string.self;
+  
+  //do simple pointer addition
+  for(int i=0;i<j;i++){
+      string += (*(selv+i));
+  }
+  
+  val = commandline_get_string(std::string(string), mini_buffer);
+  
+  return ecl_make_int(std::atoi(val.c_str()));
+}
+
+cl_object get_double(cl_object prompt) {
+  std::string val;
+  std::string string = "";
+  
+  //get dimension
+  int j = prompt->string.dim;
+  
+  //get pointer
+  ecl_character* selv = prompt->string.self;
+  
+  //do simple pointer addition
+  for(int i=0;i<j;i++){
+      string += (*(selv+i));
+  }
+  
+  val = commandline_get_string(std::string(string), mini_buffer);
+  
+  return ecl_make_double_float(std::atof(val.c_str()));
 }
 
 Fl_Double_Window *main_window=(Fl_Double_Window *)0;
@@ -102,7 +220,7 @@ int main(int argc, char **argv) {
       mini_buffer->labelsize(14);
       mini_buffer->labelcolor(FL_FOREGROUND_COLOR);
       mini_buffer->textfont(4);
-      mini_buffer->callback((Fl_Callback*)commandline_CB_wrapper);
+      mini_buffer->callback((Fl_Callback*)commandline_CB);
       mini_buffer->align(Fl_Align(FL_ALIGN_TOP_LEFT));
       mini_buffer->when(FL_WHEN_ENTER_KEY_ALWAYS);
     } // CommandLine* mini_buffer
@@ -127,7 +245,10 @@ int main(int argc, char **argv) {
   // Register ecl functions
   cl_def_c_function(c_string_to_object("add-line"), cl_objectfn_fixed(add_line), 4);
   cl_def_c_function(c_string_to_object("add-circle"), cl_objectfn_fixed(add_circle), 3);
-  cl_def_c_function(c_string_to_object("get-int"), cl_objectfn_fixed(get_int), 0);
+  cl_def_c_function(c_string_to_object("add-arc"), cl_objectfn_fixed(add_arc), 6);
+  cl_def_c_function(c_string_to_object("ask-string"), cl_objectfn_fixed(get_string), 1);
+  cl_def_c_function(c_string_to_object("ask-int"), cl_objectfn_fixed(get_int), 1);
+  cl_def_c_function(c_string_to_object("ask-double"), cl_objectfn_fixed(get_double), 1);
   main_window->show();
   main_window->show(argc, argv);
   return Fl::run();

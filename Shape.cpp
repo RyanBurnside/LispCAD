@@ -29,12 +29,17 @@ Shape Shape::shape_make_circle(ShapePoint& center, double radius,
   return s;
 }
 
-Shape Shape::shape_make_arc(ShapePoint& start, ShapePoint& center, 
-			    ShapePoint& end, unsigned char red = 0, 
-			    unsigned char green = 0, unsigned char blue = 0) 
+Shape Shape::shape_make_arc(ShapePoint& top_left, 
+			      ShapePoint& lower_right,
+			      double angle,
+			      double angle2,
+			      unsigned char red, 
+			      unsigned char green, unsigned char blue)
 {
-  std::vector<ShapePoint> temp {start, center, end};
+  std::vector<ShapePoint> temp {top_left, lower_right};
   Shape s(temp, Shape::type::ARC);
+  s.angle_1 = angle;
+  s.angle_2 = angle2;
   s.set_color(red, green, blue);
   return s;
 }

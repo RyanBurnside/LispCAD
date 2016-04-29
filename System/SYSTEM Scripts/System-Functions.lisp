@@ -39,9 +39,31 @@
 	     (y2 (+ cen-y (* (sin (+ angle sub-step)) radius))))
 	(add-line x y x2 y2)))))
 
+(defun add-grid (x y x2 y2 across down)
+  "Adds a grid of lines with <across> spaces across, <down> spaces down"
+  (let ((x-step (/ (- x2 x) across))
+	(y-step (/ (- y2 y) down)))
+
+    (dotimes (i (1+ across))
+      (add-line (+ x (* x-step i))
+		y
+		(+ x (* x-step i))
+		y2))
+
+    (dotimes (i (1+ down))
+      (add-line x
+		(+ y (* y-step i))
+		x2
+		(+ y (* y-step i))))))
+
+
+
+
 ;;; Just for fun functions
 (defun add-golden-rectangle (x y width)
   "Creates a golden ratio rectangle given a position and width"
   (add-rectangle x y (+ x width) (+ y (* width .618033))))
+
+
 
 (print "Finished loading system defined functions")

@@ -11,9 +11,13 @@
 #include "CommandLine.h"
 void add_line(cl_object x, cl_object y, cl_object x2, cl_object y2);
 void add_circle(cl_object x, cl_object y, cl_object radius);
+void add_arc(cl_object start_x, cl_object start_y, cl_object end_x, cl_object end_y, cl_object angle, cl_object angle2);
 void test_CB(Fl_Widget* w, void* p);
-void commandline_CB_wrapper(Fl_Widget* w, void* p);
-cl_object get_int();
+void commandline_CB(Fl_Widget* w, void* data);
+std::string commandline_get_string(const std::string& prompt, CommandLine *input);
+cl_object get_string(cl_object prompt);
+cl_object get_int(cl_object prompt);
+cl_object get_double(cl_object prompt);
 #include <FL/Fl_Double_Window.H>
 extern Fl_Double_Window *main_window;
 extern CADCanvas *canvas;
